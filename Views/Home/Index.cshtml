@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Trang chủ";
+}
+
+@model Web_Double.Models.DataModel
+
+
+<script src="~/wwwroot/js/JavaScript.js"></script>
+<link rel="stylesheet" href="~/wwwroot/css/index.css" />
+<div class="app">
+    <div class="slider">
+        <div class="slider_img">
+            <img class="display_block" src="~/wwwroot/img/image/slider_1.png" />
+            <img class="" src="~/wwwroot/img/image/slider_2.png" />
+            <img class="" src="~/wwwroot/img/image/slider_3.png" />
+        </div>
+        <div class="slider_dot">
+            <span class="slider-span"></span>
+            <span class=""></span>
+            <span class=""></span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="product">
+            <a href="#"><h1>Áo T-Shirt</h1></a>
+            <div class="list_product">
+                @foreach (var item in Model.Tshirts)
+                {
+                    <div class="product_list">
+                        <div class="list_img">
+                            <a href="@Url.Action("Details", "Home", new { id = item.id, type = "Tshirt" })"><img src="~/wwwroot/img/image/@item.img" /></a>
+                            <span>@(string.Format("{0:0}", @item.discount * 100))%</span>
+                        </div>
+                        <div class="list_p">
+                            <a href="#"><h3>@item.name</h3></a>
+                            <a href="#"><span>@String.Format("{0:N0}", item.final_price) &#8363;</span></a>
+                            <a href="#"><span class="price" style="color: #ccc;">@String.Format("{0:N0}", item.price) &#8363;</span></a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="product">
+            <a href="#"><h1>Áo PoLo</h1></a>
+            <div class="list_product">
+                @foreach (var item in Model.PoloShirts)
+                {
+                    <div class="product_list">
+                        <div class="list_img">
+                            <a href="@Url.Action("Details", "Home", new { id = item.id, type = "PoloShirt" })"><img src="~/wwwroot/img/image/@item.img" /></a>
+                            <span>@(string.Format("{0:0}", @item.discount * 100))%</span>
+                        </div>
+                        <div class="list_p">
+                            <a href="#"><h3>@item.name</h3></a>
+                            <a href="#"><span>@String.Format("{0:N0}", item.final_price) &#8363;</span></a>
+                            <a href="#"><span class="price" style="color: #ccc;">@String.Format("{0:N0}", item.price) &#8363;</span></a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="index_footer">
+        <h1>Find out TEELAB more</h1>
+        <div class="index_list">
+            <a href="#"><img src="~/wwwroot/img/image/feedback_1.png" /></a>
+            <a href="#"><img src="~/wwwroot/img/image/feedback_2.png" /></a>
+            <a href="#"><img src="~/wwwroot/img/image/feedback_5.png" /></a>
+            <a href="#"><img src="~/wwwroot/img/image/feedback_6.png" /></a>
+        </div>
+    </div>
+</div>
+

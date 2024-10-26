@@ -1,0 +1,92 @@
+﻿.display {
+    display: none;
+}
+
+.block {
+    display: block;
+}
+
+.AllProduct {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 3rem;
+    padding-bottom: 20rem;
+}
+
+.All_navbar {
+    flex: 1.5;
+}
+
+    .All_navbar h1 {
+        font-size: 3rem;
+        padding-bottom: 1rem;
+    }
+
+.navbar_li {
+    width: 100%;
+    padding: 1.5rem 1rem;
+    font-size: 1.6rem;
+    margin-left: 3rem;
+    list-style-type: disc;
+}
+
+    .navbar_li:hover {
+        opacity: 0.8;
+        cursor: pointer;
+    }
+
+.All_list {
+    flex: 4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+    max-width: 100%;
+}
+
+.list_shirt {
+}
+
+    .list_shirt img {
+        width: 100%;
+        max-height: 20rem;
+    }
+
+.list_shirt-img {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+    .list_shirt-img > a > img {
+        max-height: 20rem;
+    }
+
+    .list_shirt-img span {
+        position: absolute;
+        top: 0.4rem;
+        left: 0.4rem;
+        padding: 0.2rem 1rem;
+        background-color: #ff0000;
+        color: #fff;
+    }
+
+.list_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 1.8rem;
+}
+
+    .list_info a {
+        color: #545457;
+    }
+
+.final_price {
+    color: #ff0000;
+    padding-right: 1rem;
+}
+
+.price {
+    color: #ccc;
+    text-decoration: line-through;
+}

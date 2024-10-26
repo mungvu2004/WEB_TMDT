@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Giỏ hàng";
+}
+<link rel="stylesheet" href="~/wwwroot/css/Cart.css"/>
+<div class="cart">
+    <h1>Giỏ hàng của bạn</h1>
+    <table id="cartTable">
+        <thead>
+            <tr>
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Tổng</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="cartBody">
+            <!-- Dữ liệu sẽ được thêm vào đây từ JavaScript -->
+        </tbody>
+    </table>
+    <div id="totalAmount">
+        <strong>Tổng tiền: <span id="totalPrice">0</span> &#8363;</strong>
+        <strong>Giảm giá còn: <span id="totalFinal">0</span> &#8363;</strong>
+    </div>
+</div>
+<div class="body_btn">
+    <div class="cart_button">
+        <h3>Chọn phương thức thanh toán:</h3>
+        <div class="btn_tt">
+            <input type="radio" id="creditCard" name="paymentMethod" value="creditCard">
+            <label for="creditCard">Thẻ tín dụng</label><br>
+        </div>
+        <div class="btn_tt">
+            <input type="radio" id="cashOnDelivery" name="paymentMethod" value="cashOnDelivery">
+            <label for="cashOnDelivery">Thanh toán khi nhận hàng</label><br>
+        </div>
+        <button id="tt_button">Thanh toán</button>
+    </div>
+</div>
+<script>
+    const userId = '@ViewBag.UserId';
+    console.log(userId);
+    let name = '@ViewBag.name';
+    console.log(name);
+    document.addEventListener('DOMContentLoaded', function () {
+        const userId = '@ViewBag.UserId'; // Sử dụng dấu ngoặc đơn đơn quanh ViewBag.UserId
+        console.log('User ID:', userId); // In giá trị userId ra console để kiểm tra
+
+        const cart = JSON.parse(localStorage.getItem(userId + '_cart')) || [];
+        console.log("Giỏ hàng hiện tại trước khi thêm:", cart);
+
+        const cartBody = document.getElementById('cartBody');
+        let totalPrice = 0;
+        let totalFinal = 0;
+        cart.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML =`
+                <td>
+                    <img src="@Url.Content("~/wwwroot/img/image/${item.productImg}")"/>
+                </td>
+                <td>${item.productName}</td>
+                <td>${item.final_price} &#8363;</td>
+                <td>
+                    <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${item.productId}, this.value)">
+                </td>
+                <td>${item.final_price * item.quantity} &#8363;</td>
+                <td><button onclick="removeFromCart(${item.productId})">Xóa</button></td>`
+            ;
+            cartBody.appendChild(row);
+            totalPrice += item.price * item.quantity;
+            totalFinal += (item.final_price * item.quantity);
+            
+        });
+        document.getElementById('totalPrice').innerText = totalPrice;
+        document.getElementById('totalFinal').innerText = totalFinal;
+    });
+
+    function updateQuantity(productId, quantity) {
+        const userId = '@ViewBag.UserId';
+        let cart = JSON.parse(localStorage.getItem(userId + '_cart')) || [];
+        const item = cart.find(item => item.productId === productId);
+        if (item) {
+            item.quantity = parseInt(quantity);
+            localStorage.setItem(userId + '_cart', JSON.stringify(cart));
+            location.reload();
+        }
+    }
+
+    function removeFromCart(productId) {
+        const userId = '@ViewBag.UserId';
+        let cart = JSON.parse(localStorage.getItem(userId + '_cart')) || [];
+        cart = cart.filter(item => item.productId !== productId);
+        localStorage.setItem(userId + '_cart', JSON.stringify(cart));
+        location.reload(); // Tải lại trang để cập nhật giỏ hàng
+    }
+    document.getElementById('tt_button').addEventListener('click', function () {
+        const paymentMethods = document.getElementsByName('paymentMethod');
+        let selectedMethod = null;
+
+        for (let method of paymentMethods) {
+            if (method.checked) {
+                selectedMethod = method.value;
+                break;
+            }
+        }
+
+        if (selectedMethod) {
+            if (totalFinal !== 0) {
+                alert(`Bạn đã thanh toán thành công bằng phương thức: ${selectedMethod}!`);
+
+                // Xóa giỏ hàng
+                localStorage.setItem(userId + '_cart', JSON.stringify([]));
+
+                // Chuyển hướng về trang chủ
+                window.location.href = '/Home/Index'; // Thay đổi '/' thành đường dẫn trang chủ của bạn
+            } else {
+                alert('Chưa có sản phẩm để thanh toán!');
+            }
+        } else {
+            alert('Vui lòng chọn một phương thức thanh toán!');
+        }
+    });
+
+</script>

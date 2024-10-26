@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+}
+
+
+@model Web_Double.Models.ProductDetailViewModel
+<link rel="stylesheet" href="~/wwwroot/css/Details.css" />
+<div class="details">
+    @if (Model.Product != null)
+    {
+        var product = Model.Product;
+        <div class="detail_img">
+            <img src="~/wwwroot/img/image/@product.img" />
+        </div>
+        <div class="detail_p">
+            <h1>@product.name</h1>
+            <div class="details_icons">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <a href="#">Viết đánh giá của bạn</a>
+            </div>
+            <div class="details_price">
+                <span class="final_price">@String.Format("{0:N0}", product.final_price) &#8363;</span>
+                <span class="price">@String.Format("{0:N0}", product.price) &#8363;</span>
+                <span class="discount">@Math.Round(@product.discount * 100) %</span>
+            </div>
+            <div class="details_polise">
+                <div class="item"><i class="fas fa-rotate-left">Đổi trả dễ dàng</i></div>
+                <div class="item"><i class="fas fa-rotate-left">Chính hãng 100%</i></div>
+                <div class="item"><i class="fas fa-truck">Giao hàng toàn quốc</i></div>
+            </div>
+            <div class="details_banchay">
+                <div class="banchay_img">
+                    <img src="https://bizweb.dktcdn.net/100/415/697/themes/902041/assets/cup.png?1710226595388" />
+                    <p>Top bán chạy</p>
+                </div>
+                <span>Sản phẩm bán chạy</span>
+            </div>
+            <div class="de_btn">
+                <button id="addToCartButton" style="background-color: #000;
+width: 100%; height: 50px; outline: none; border: none; color: #fff; font-weight: 600; font-size: 14px; margin-top: 50px; text-transform: uppercase;" onclick="addToCart('@product.img', @product.shirt_id, '@product.name', @product.final_price, @product.price)">Thêm sản phẩm vào giỏ hàng </button>
+            </div>
+        </div>
+        <div class="detail_mt"></div>
+    }
+</div>
+
+<script>
+    // Hàm thêm sản phẩm vào giỏ hàng
+    function addToCart(productImg, productId, productName, final_price, price) {
+        const userId = @ViewBag.UserId;
+        let cart = JSON.parse(localStorage.getItem(userId + '_cart')) || [];
+        const existingItem = cart.find(item => item.productId === productId);
+
+        if (existingItem) {
+            existingItem.quantity += 1; // Tăng số lượng nếu sản phẩm đã có trong giỏ
+        } else {
+            const newItem = { productImg, productId, productName, final_price, price, quantity: 1 }; // Thêm sản phẩm mới
+            cart.push(newItem);
+        }
+
+        localStorage.setItem(userId + '_cart', JSON.stringify(cart)); // Lưu giỏ hàng vào Local Storage
+        alert('Sản phẩm đã được thêm vào giỏ hàng!'); // Thông báo cho người dùng
+        updateCartCount();
+    }
+</script>

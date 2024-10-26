@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "AllProduct";
+}
+
+@model Web_Double.Models.DataModel
+
+<script src="@Url.Content("~/wwwroot/js/AllProduct.js")"></script>
+<link rel="stylesheet" href="@Url.Content("~/wwwroot/css/ProductAll.css")" />
+<div class="AllProduct">
+    <div class="All_navbar">
+        <h1>&#9776;	Danh mục</h1>
+        <ul>
+            <li class="navbar_li" data-type="Tshirt">T-Shirts</li>
+            <li class="navbar_li" data-type="PoloShirt">Áo Polo</li>
+            <li class="navbar_li" data-type="Hoodee">Baby Tee</li>
+            <li class="navbar_li" data-type="Somi">Áo sơ mi</li>
+            <li class="navbar_li" data-type="Aokhoac">Áo khoác</li>
+            <li class="navbar_li" data-type="Quan">Quần</li>
+            <li class="navbar_li" data-type="Phukien">Phụ kiện</li>
+
+        </ul>
+    </div>
+    <div class="All_list">
+        @{
+            var shirts = new List<(IEnumerable<dynamic> Items, string Type)>
+            {
+                (Model.Tshirts, "Tshirt"),
+                (Model.PoloShirts, "PoloShirt"),
+                (Model.Phukiens, "Phukien"),
+                (Model.Aokhoacs, "Aokhoac"),
+                (Model.Somis, "Somi"),
+                (Model.Quans, "Quan"),
+                (Model.Hoodees, "Hoodee")
+            };
+        }
+        @foreach (var (items, type) in shirts)
+        {
+            foreach (var item in items)
+            {
+                <div class="list_shirt @type @(type == "Tshirt" ? "block" : "display")">
+                    <div class="list_shirt-img">
+                        <a href="@Url.Action("Details", "Home", new { id = item.id, type })">
+                            <img src="~/wwwroot/img/image/@item.img" />
+                        </a>
+                        <span class="discount">@Math.Round(@item.discount * 100)%</span>
+                    </div>
+                    <div class="list_info">
+                        <a href="@Url.Action("Details", "Home", new { id = item.id, type })">@item.name</a>
+                        <a href="@Url.Action("Details", "Home", new { id = item.id, type })">
+                            <span class="final_price">@String.Format("{0:N0}", item.final_price) &#8363;</span>
+                            <span class="price">@String.Format("{0:N0}", item.price) &#8363;</span>
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
